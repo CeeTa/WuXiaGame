@@ -1,0 +1,1650 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<style type="text/css">
+	canvas{
+		top: 0;
+		left: 0;
+		position: absolute;
+        background: transparent;
+	}
+
+    .canvas{
+        display: none;
+    }
+
+    .btn{
+        position: relative;
+        background-color: transparent;
+        border: transparent;
+        top: 450px;
+        left: 770px;
+        font-size: 40px;
+        font-family: DFKai-SB;
+        color: white;
+    }
+    #nameForm{
+        position: absolute;
+        top: 300px;
+        left: 300px;
+        font-size: 30px;
+        font-family: DFKai-SB;
+    }
+    #playerName{
+        font-size: 30px;
+        font-family: DFKai-SB;
+    }
+    #startBtn{
+        color: black;
+        display: none;
+    }
+    #nameForm{
+        display: none;
+    }
+    
+    #C1C1Btn{
+        position: absolute;
+        display: none;
+        color: black;
+        left: 220px;  
+        top: 200px;
+
+    }
+    #C1C2Btn{
+        position: absolute;
+        display: none;
+        color: black;  
+        left: 220px;
+        top: 300px;
+    }
+
+    
+    #score{
+    position: absolute;
+    background-color: transparent;
+    width: 250px;
+    height: 30px;
+    left: 750px;
+    font-size: 20pt;
+    font-family: DFKai-S;
+    color: red;
+    display: none;
+    }
+    #bird{
+    display: none;
+    }
+    #player{
+    display: none;
+    }
+    #divbattle{
+        display: none;
+    }
+    #divbattle2{
+        display: none;
+    }
+
+    #background {
+        z-index: 1;
+    }
+    #main {
+        z-index: 2;
+    }
+    #ship {
+        z-index: 3;
+    }
+	</style>
+</head>
+
+
+<body onkeydown="playerMove(event)" onload="init()">
+	<div id="divGameBegin">
+		<canvas id="beginBgCanvas" width="1280" height="720"></canvas>
+		<canvas id="beginTtCanvas" width="1280" height="720"></canvas>
+        <canvas id="beginTt2Canvas" class="canvas" width="1280" height="720"></canvas>
+        <button id="nextBtn" class="btn" onclick="StartGame()">闖蕩江湖</button>
+        <button id="startBtn" class="btn" onclick="ChoseName()">開始遊戲</button>
+        <form id="nameForm">
+            <label for="playerName">輸入姓名：</label>
+            <input id="playerName" name="playerName" type="text" size="14" value="謝天謝地謝易叡">
+        </form>
+
+        <canvas id="charter1BbCanvas" class="canvas" width="1280" height="720"></canvas>
+        <canvas id="charter1BTCanvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PICanvas" class="canvas" width="1280" height="720"></canvas>
+        <canvas id="charter1PTCanvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CICanvas" class="canvas" width="1280" height="720"></canvas>
+        <canvas id="charter1CTCanvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT2Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT2Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT3Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT3Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT4Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT4Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT5Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT5Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT6Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT6Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <button id="C1C1Btn" class="btn" onclick="count()">師命不敢違，認命捉麻雀去吧...</button>
+        <button id="C1C2Btn" class="btn">自己的麻雀自己抓，打槍師父！</button>
+
+        <canvas id="c1gameOverCanvas" class="canvas" width="1280" height="720"></canvas>
+
+        <div id="divbattle">
+            <canvas id="battle01BGCanvas" class="canvas" width="1280" height="720"></canvas>
+            <p id="score">抓到的麻雀數量：0</p>
+            <img id="bird" src="imgs/bird.png" style="position:relative; top:150px; left:600px">
+            <img id="player" src="imgs/playerinbattle.png" style="position:relative; top:200px; left:-70px">
+        </div>
+
+        <canvas id="charter1PT7Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT7Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT8Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT8Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT9Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT9Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1PT10Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter1CT10Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2BbCanvas" class="canvas" width="1280" height="720"></canvas>
+        <canvas id="charter2CICanvas" class="canvas" width="1280" height="720"></canvas>
+        <canvas id="charter2PICanvas" class="canvas" width="1280" height="720"></canvas>
+        <canvas id="charter1PI2Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2PT1Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2CT1Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2PT2Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2CT2Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2PT3Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2CT3Canvas" class="canvas" onclick="over()" width="1280" height="720"></canvas>
+
+        <canvas id="charter2PT4Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2CT4Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <canvas id="charter2PT5Canvas" class="canvas" width="1280" height="720"></canvas>
+        
+        <canvas id="charter2CT5Canvas" class="canvas" width="1280" height="720"></canvas>
+
+        <div id="divbattle2">
+            <canvas id="background" width="1280" height="720"></canvas>
+            <canvas id="main" width="1280" height="720"></canvas>
+            <canvas id="ship" width="1280" height="720"></canvas>
+        </div>
+    </div>
+
+	<script type="text/javascript">
+		var cvBB = document.getElementById("beginBgCanvas");
+    	var ctxBB = cvBB.getContext("2d");
+    	var imgBB = new Image();
+    	imgBB.src = "imgs/begin.jpg";
+    	imgBB.addEventListener("load", drawBB);
+		function drawBB() {
+        	ctxBB.drawImage(imgBB, 0, 0);
+    	}
+    	var cvBT = document.getElementById("beginTtCanvas");
+    	var ctxBT = cvBT.getContext("2d");
+    	ctxBT.font = '30pt DFKai-SB';
+    	ctxBT.fillStyle = 'black';
+    	ctxBT.fillText('殺', 200, 100);
+    	ctxBT.fillText('盡', 200, 140);
+    	ctxBT.fillText('江', 200, 180);
+    	ctxBT.fillText('南', 200, 220);
+    	ctxBT.fillText('百', 200, 260);
+    	ctxBT.fillText('萬', 200, 300);
+    	ctxBT.fillText('兵', 200, 340);
+    	ctxBT.fillText('腰', 300, 120);
+    	ctxBT.fillText('間', 300, 160);
+    	ctxBT.fillText('寶', 300, 200);
+    	ctxBT.fillText('劍', 300, 240);
+    	ctxBT.fillText('血', 300, 280);
+    	ctxBT.fillText('猶', 300, 320);
+    	ctxBT.fillText('腥', 300, 360);
+    	ctxBT.fillText('山', 410, 110);
+    	ctxBT.fillText('僧', 410, 150);
+    	ctxBT.fillText('不', 410, 190);
+    	ctxBT.fillText('識', 410, 230);
+    	ctxBT.fillText('英', 410, 270);
+    	ctxBT.fillText('雄', 410, 310);
+    	ctxBT.fillText('漢', 410, 350);
+    	ctxBT.fillText('只', 510, 130);
+    	ctxBT.fillText('憑', 510, 170);
+    	ctxBT.fillText('嘵', 510, 210);
+    	ctxBT.fillText('嘵', 510, 250);
+    	ctxBT.fillText('問', 510, 290);
+    	ctxBT.fillText('姓', 510, 330);
+    	ctxBT.fillText('名', 510, 370);
+    	
+        $(document).ready(function(){
+            $("#nextBtn").click(function(){
+                $("#beginBgCanvas").fadeTo(1000, 0.6);
+                $("#beginTtCanvas").fadeTo(1000, 0);
+                $("#nextBtn").hide("slow");
+                $("#beginTt2Canvas").show("slow");
+                $("#startBtn").show("slow");
+                $("#nameForm").show("slow");
+            });
+        });
+
+        var cvBT2 = document.getElementById("beginTt2Canvas");
+        var ctxBT2 = cvBT2.getContext("2d");
+        ctxBT2.globalAlpha = (1);
+        ctxBT2.font = '25pt DFKai-SB';
+        ctxBT2.fillStyle = 'black'; 
+        ctxBT2.fillText('寒窗苦練無人問，一舉成名天下知', 280, 150);
+        ctxBT2.fillText('闖蕩江湖得要有個驚人的名字...', 280, 200);
+        ctxBT2.fillText('取個響亮的字號吧！！', 280, 250);
+
+
+        var cv1B = document.getElementById("charter1BbCanvas");
+        var ctx1B = cv1B.getContext("2d");
+        var img1B = new Image();
+        img1B.src = "imgs/ch1bg.jpg";
+        img1B.addEventListener("load", draw1B);
+        function draw1B() {
+            ctx1B.drawImage(img1B, 0, 0);
+        };
+
+
+        $(document).ready(function(){
+            $("#startBtn").click(function(){
+                $("#beginBgCanvas").hide("slow");
+                $("#charter1BbCanvas").show("slow");
+                $("#beginTt2Canvas").hide("slow");
+                $("#startBtn").hide("slow");
+                $("#nameForm").hide("slow");
+            });
+        });
+	</script>
+
+    <script type="text/javascript">
+        var cv1BT = document.getElementById("charter1BTCanvas");
+        var ctx1BT = cv1BT.getContext("2d");
+        ctx1BT.globalAlpha = 0.4;
+        ctx1BT.fillStyle = "#FFFF80";
+        ctx1BT.fillRect(300,120,500,150);
+        
+        ctx1BT.globalAlpha = 1;
+        ctx1BT.font = '25pt DFKai-SB';
+        ctx1BT.fillStyle = 'black';
+        ctx1BT.fillText('師父~', 310, 160);
+        ctx1BT.fillText('師父師父師父~您老人家在哪阿？', 310, 210);
+       
+        ctx1BT.font = '20pt DFKai-SB';
+        ctx1BT.fillStyle = 'gray';
+        ctx1BT.fillText('點擊繼續', 690, 265);
+
+        $(document).ready(function(){
+            $("#charter1BbCanvas").click(function(){
+                $("#charter1BbCanvas").fadeTo(1000,0.8);
+                $("#charter1BTCanvas").show("slow");
+            });
+        });
+    
+
+        var cv1PI = document.getElementById("charter1PICanvas");
+        var ctx1PI = cv1PI.getContext("2d");
+        var img1PI = new Image();
+        img1PI.src = "imgs/player.png";
+        img1PI.addEventListener("load", draw1PI);
+        function draw1PI() {
+            ctx1PI.drawImage(img1PI, 0, 70);
+        };
+
+        var cv1PT = document.getElementById("charter1PTCanvas");
+        var ctx1PT = cv1PT.getContext("2d");
+        ctx1PT.globalAlpha = 0.4;
+        ctx1PT.fillStyle = "#FFFF80";
+        ctx1PT.fillRect(200,20,500,150);
+        
+        ctx1PT.globalAlpha = 1;
+        ctx1PT.font = '25pt DFKai-SB';
+        ctx1PT.fillStyle = 'black';
+        ctx1PT.fillText('奇怪，師父叫我來這幹嘛阿？', 210, 60);
+        ctx1PT.fillText('不是約巳時在枯木潭畔...', 210, 100);
+        ctx1PT.fillText('都快午時了還不見人影...', 210, 140);
+        ctx1PT.font = '20pt DFKai-SB';
+        ctx1PT.fillStyle = 'gray';
+        ctx1PT.fillText('點擊繼續', 590, 165);
+
+        $(document).ready(function(){
+            $("#charter1BTCanvas").click(function(){
+                $("#charter1BTCanvas").hide("slow");
+                $("#charter1PICanvas").show("slow");
+                $("#charter1PTCanvas").show("slow");
+            });
+        });
+
+
+
+        var cv1CI = document.getElementById("charter1CICanvas");
+        var ctx1CI = cv1CI.getContext("2d");
+        var img1CI = new Image();
+        img1CI.src = "imgs/teacher.png";
+        img1CI.addEventListener("load", draw1CI);
+        function draw1CI() {
+            ctx1CI.drawImage(img1CI, 780, 95);
+        };
+
+        var cv1CT = document.getElementById("charter1CTCanvas");
+        var ctx1CT = cv1CT.getContext("2d");
+        ctx1CT.globalAlpha = 0.4;
+        ctx1CT.fillStyle = "#FFFF80";
+        ctx1CT.fillRect(300,130,500,150);
+
+        ctx1CT.globalAlpha = 1;
+        ctx1CT.font = '25pt DFKai-SB';
+        ctx1CT.fillStyle = 'black';
+        ctx1CT.fillText('別鬼叫了...', 310, 160);
+        ctx1CT.fillText('成何體統...', 310, 200);
+        ctx1CT.font = '20pt DFKai-SB';
+        ctx1CT.fillStyle = 'gray';
+        ctx1CT.fillText('點擊繼續', 690, 270);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PTCanvas").click(function(){
+                $("#charter1PTCanvas").hide("slow");
+                $("#charter1CICanvas").show("slow");
+                $("#charter1CTCanvas").show("slow");
+            });
+        });
+        
+
+        var cv1PT2 = document.getElementById("charter1PT2Canvas");
+        var ctx1PT1 = cv1PT2.getContext("2d");
+        ctx1PT1.globalAlpha = 0.4;
+        ctx1PT1.fillStyle = "#FFFF80";
+        ctx1PT1.fillRect(200,20,500,150);
+
+        ctx1PT1.globalAlpha = 1;
+        ctx1PT1.font = '25pt DFKai-SB';
+        ctx1PT1.fillStyle = 'black';
+        ctx1PT1.fillText('師父！！！', 210, 60);
+        ctx1PT1.fillText('總算找到你了！', 210, 100);
+        ctx1PT1.font = '20pt DFKai-SB';
+        ctx1PT1.fillStyle = 'gray';
+        ctx1PT1.fillText('點擊繼續', 590, 165);
+        
+        
+        $(document).ready(function(){
+            $("#charter1CTCanvas").click(function(){
+                $("#charter1CTCanvas").hide("slow");
+                $("#charter1PT2Canvas").show("slow");
+            });
+        });
+
+
+
+        var cv1CT2 = document.getElementById("charter1CT2Canvas");
+        var ctx1CT2 = cv1CT2.getContext("2d");
+        ctx1CT2.globalAlpha = 0.4;
+        ctx1CT2.fillStyle = "#FFFF80";
+        ctx1CT2.fillRect(300,130,500,150);
+
+        ctx1CT2.globalAlpha = 1;
+        ctx1CT2.font = '25pt DFKai-SB';
+        ctx1CT2.fillStyle = 'black';
+        ctx1CT2.fillText('唉，你娘什麼都好...', 310, 160);
+        ctx1CT2.fillText('就是不太會取名字...', 310, 200);
+        ctx1CT2.fillText('把你的名字取的太二了...', 310, 240);
+        ctx1CT2.font = '20pt DFKai-SB';
+        ctx1CT2.fillStyle = 'gray';
+        ctx1CT2.fillText('點擊繼續', 690, 275);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PT2Canvas").click(function(){
+                $("#charter1PT2Canvas").hide("slow");
+                $("#charter1CT2Canvas").show("slow");
+            });
+        });
+
+
+
+
+        var cv1PT3 = document.getElementById("charter1PT3Canvas");
+        var ctx1PT3 = cv1PT3.getContext("2d");
+        ctx1PT3.globalAlpha = 0.4;
+        ctx1PT3.fillStyle = "#FFFF80";
+        ctx1PT3.fillRect(200,20,500,150);
+
+        ctx1PT3.globalAlpha = 1;
+        ctx1PT3.font = '25pt DFKai-SB';
+        ctx1PT3.fillStyle = 'black';
+        ctx1PT3.fillText('(...我娘什麼都好?)', 210, 60);
+        ctx1PT3.fillText('(這句話怎麼聽起來怪怪的?)', 210, 100);
+        ctx1PT3.fillText('............', 210, 140);
+        ctx1PT3.font = '20pt DFKai-SB';
+        ctx1PT3.fillStyle = 'gray';
+        ctx1PT3.fillText('點擊繼續', 590, 165);
+        
+        
+        $(document).ready(function(){
+            $("#charter1CT2Canvas").click(function(){
+                $("#charter1CT2Canvas").hide("slow");
+                $("#charter1PT3Canvas").show("slow");
+            });
+        });
+
+
+        var cv1CT3 = document.getElementById("charter1CT3Canvas");
+        var ctx1CT3 = cv1CT3.getContext("2d");
+        ctx1CT3.globalAlpha = 0.4;
+        ctx1CT3.fillStyle = "#FFFF80";
+        ctx1CT3.fillRect(300,130,500,150);
+
+        ctx1CT3.globalAlpha = 1;
+        ctx1CT3.font = '25pt DFKai-SB';
+        ctx1CT3.fillStyle = 'black';
+        ctx1CT3.fillText('明天此刻你就滿十八歲了，', 310, 160);
+        ctx1CT3.fillText('為師也該教你轉大人的功夫了...', 310, 200);
+        ctx1CT3.fillText('厄不對，是驗收你的功夫了...', 310, 240);
+        ctx1CT3.font = '20pt DFKai-SB';
+        ctx1CT3.fillStyle = 'gray';
+        ctx1CT3.fillText('點擊繼續', 690, 275);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PT3Canvas").click(function(){
+                $("#charter1PT3Canvas").hide("slow");
+                $("#charter1CT3Canvas").show("slow");
+            });
+        });
+
+
+        var cv1PT4 = document.getElementById("charter1PT4Canvas");
+        var ctx1PT4 = cv1PT4.getContext("2d");
+        ctx1PT4.globalAlpha = 0.4;
+        ctx1PT4.fillStyle = "#FFFF80";
+        ctx1PT4.fillRect(200,20,500,150);
+
+        ctx1PT4.globalAlpha = 1;
+        ctx1PT4.font = '25pt DFKai-SB';
+        ctx1PT4.fillStyle = 'black';
+        ctx1PT4.fillText('(師父不要越描越黑阿...)', 210, 60);
+        ctx1PT4.fillText('怎麼個驗收法呢師父>~<?', 210, 100);
+        ctx1PT4.font = '20pt DFKai-SB';
+        ctx1PT4.fillStyle = 'gray';
+        ctx1PT4.fillText('點擊繼續', 590, 165);
+        
+        
+        $(document).ready(function(){
+            $("#charter1CT3Canvas").click(function(){
+                $("#charter1CT3Canvas").hide("slow");
+                $("#charter1PT4Canvas").show("slow");
+            });
+        });
+
+
+        var cv1CT4 = document.getElementById("charter1CT4Canvas");
+        var ctx1CT4 = cv1CT4.getContext("2d");
+        ctx1CT4.globalAlpha = 0.4;
+        ctx1CT4.fillStyle = "#FFFF80";
+        ctx1CT4.fillRect(300,130,500,150);
+
+        ctx1CT4.globalAlpha = 1;
+        ctx1CT4.font = '25pt DFKai-SB';
+        ctx1CT4.fillStyle = 'black';
+        ctx1CT4.fillText('天下武功，唯快不破！', 310, 160);
+        ctx1CT4.fillText('今天就來捉麻雀，考驗你的輕功！', 310, 200);
+        ctx1CT4.fillText('(啊...焦阿巴...流口水...)', 310, 240);
+        ctx1CT4.font = '20pt DFKai-SB';
+        ctx1CT4.fillStyle = 'gray';
+        ctx1CT4.fillText('點擊繼續', 690, 275);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PT4Canvas").click(function(){
+                $("#charter1PT4Canvas").hide("slow");
+                $("#charter1CT4Canvas").show("slow");
+            });
+        });
+
+
+
+        var cv1PT5 = document.getElementById("charter1PT5Canvas");
+        var ctx1PT5 = cv1PT5.getContext("2d");
+        ctx1PT5.globalAlpha = 0.4;
+        ctx1PT5.fillStyle = "#FFFF80";
+        ctx1PT5.fillRect(200,20,500,150);
+
+        ctx1PT5.globalAlpha = 1;
+        ctx1PT5.font = '25pt DFKai-SB';
+        ctx1PT5.fillStyle = 'black';
+        ctx1PT5.fillText('師父你該不會想吃焦阿巴吧？', 210, 60);
+        ctx1PT5.font = '20pt DFKai-SB';
+        ctx1PT5.fillStyle = 'gray';
+        ctx1PT5.fillText('點擊繼續', 590, 165);
+        
+        
+        $(document).ready(function(){
+            $("#charter1CT4Canvas").click(function(){
+                $("#charter1CT4Canvas").hide("slow");
+                $("#charter1PT5Canvas").show("slow");
+            });
+        });
+
+
+        var cv1CT5 = document.getElementById("charter1CT5Canvas");
+        var ctx1CT5 = cv1CT5.getContext("2d");
+        ctx1CT5.globalAlpha = 0.4;
+        ctx1CT5.fillStyle = "#FFFF80";
+        ctx1CT5.fillRect(300,130,690,150);
+
+        ctx1CT5.globalAlpha = 1;
+        ctx1CT5.font = '25pt DFKai-SB';
+        ctx1CT5.fillStyle = 'black';
+        ctx1CT5.fillText('焦阿巴好吃！！！', 310, 160);
+        ctx1CT5.fillText('少囉嗦，我是說...你這好吃懶做的東西！', 310, 200);
+        ctx1CT5.fillText('限你20秒內捉到20隻麻雀，不然...有你好看！', 310, 240);
+        ctx1CT5.font = '20pt DFKai-SB';
+        ctx1CT5.fillStyle = 'gray';
+        ctx1CT5.fillText('點擊繼續', 870, 275);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PT5Canvas").click(function(){
+                $("#charter1PT5Canvas").hide("slow");
+                $("#charter1CT5Canvas").show("slow");
+            });
+        });
+
+
+
+        var cv1PT6 = document.getElementById("charter1PT6Canvas");
+        var ctx1PT6 = cv1PT6.getContext("2d");
+        ctx1PT6.globalAlpha = 0.4;
+        ctx1PT6.fillStyle = "#FFFF80";
+        ctx1PT6.fillRect(200,20,500,150);
+
+        ctx1PT6.globalAlpha = 1;
+        ctx1PT6.font = '25pt DFKai-SB';
+        ctx1PT6.fillStyle = 'black';
+        ctx1PT6.fillText('20隻...不怕撐死啊...', 210, 60);
+        ctx1PT6.font = '20pt DFKai-SB';
+        ctx1PT6.fillStyle = 'gray';
+        ctx1PT6.fillText('點擊繼續', 590, 165);
+        
+        
+        $(document).ready(function(){
+            $("#charter1CT5Canvas").click(function(){
+                $("#charter1CT5Canvas").hide("slow");
+                $("#charter1PT6Canvas").show("slow");
+            });
+        });
+
+
+        var cv1CT6 = document.getElementById("charter1CT6Canvas");
+        var ctx1CT6 = cv1CT6.getContext("2d");
+        ctx1CT6.globalAlpha = 0.4;
+        ctx1CT6.fillStyle = "#FFFF80";
+        ctx1CT6.fillRect(300,130,500,150);
+
+        ctx1CT6.globalAlpha = 1;
+        ctx1CT6.font = '25pt DFKai-SB';
+        ctx1CT6.fillStyle = 'black';
+        ctx1CT6.fillText('你在嘀咕什麼?', 310, 160);
+        ctx1CT6.fillText('還不快去?', 310, 200);
+        ctx1CT6.font = '20pt DFKai-SB';
+        ctx1CT6.fillStyle = 'gray';
+        ctx1CT6.fillText('點擊繼續', 690, 275);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PT6Canvas").click(function(){
+                $("#charter1PT6Canvas").hide("slow");
+                $("#charter1CT6Canvas").show("slow");
+            });
+        });
+
+
+
+        $(document).ready(function(){
+            $("#charter1CT6Canvas").click(function(){
+                $("#charter1CT6Canvas").hide("slow");
+                $("#charter1BbCanvas").fadeTo(1000,0.4);
+                $("#C1C1Btn").show("slow");
+                $("#C1C2Btn").show("slow");
+            });
+        });
+
+
+        var cv1GO = document.getElementById("c1gameOverCanvas");
+        var ctx1GO = cv1GO.getContext("2d");
+
+        ctx1GO.font = '40pt DFKai-SB';
+        ctx1GO.fillStyle = 'black';
+        ctx1GO.fillText('違抗師命，大逆不道！', 250, 120);
+        ctx1GO.fillText('被師父一掌震斷經脈，', 250, 200);
+        ctx1GO.fillText('廢去一身修為，', 250, 280);
+        ctx1GO.fillText('終身碌碌無為，', 250, 360);
+        ctx1GO.fillText('過著慘淡頹廢的生活...', 250, 440);  
+
+
+        $(document).ready(function(){
+            $("#C1C1Btn").click(function(){
+                $("#charter1PICanvas").hide("slow");
+                $("#charter1CICanvas").hide("slow");
+                $("#C1C1Btn").hide("slow");
+                $("#C1C2Btn").hide("slow");
+                $("#divbattle").show();
+                $("#battle01BGCanvas").show("slow");
+                $("#score").show("slow");
+                $("#bird").show("slow");
+                $("#player").show("slow");
+
+            });
+        });
+
+        function count(){setTimeout(function nextOn(){
+            document.getElementById("divbattle").style.display = "none";
+            document.getElementById("charter1PT7Canvas").style.display="inline";
+            document.getElementById("charter1PICanvas").style.display="inline";
+            document.getElementById("charter1CICanvas").style.display="inline";
+       
+            },10000)
+        }
+
+
+        $(document).ready(function(){
+            $("#C1C2Btn").click(function(){
+                $("#charter1PICanvas").hide("slow");
+                $("#charter1CICanvas").hide("slow");
+                $("#C1C1Btn").hide("slow");
+                $("#C1C2Btn").hide("slow");
+                $("#c1gameOverCanvas").show("slow");
+
+            });
+        });
+
+        var cv1PT7 = document.getElementById("charter1PT7Canvas");
+        var ctx1PT7 = cv1PT7.getContext("2d");
+        ctx1PT7.globalAlpha = 0.4;
+        ctx1PT7.fillStyle = "#FFFF80";
+        ctx1PT7.fillRect(200,20,500,150);
+
+        ctx1PT7.globalAlpha = 1;
+        ctx1PT7.font = '25pt DFKai-SB';
+        ctx1PT7.fillStyle = 'black';
+        ctx1PT7.fillText('師父麻雀捉回來了~', 210, 60);
+        ctx1PT7.font = '20pt DFKai-SB';
+        ctx1PT7.fillStyle = 'gray';
+        ctx1PT7.fillText('點擊繼續', 590, 165);
+        
+        
+        $(document).ready(function(){
+            $("#charter1PT7Canvas").click(function(){
+                $("#charter1PT7Canvas").hide("slow");
+                $("#charter1CT7Canvas").show("slow");
+            });
+        });
+
+
+        var cv1CT7 = document.getElementById("charter1CT7Canvas");
+        var ctx1CT7 = cv1CT7.getContext("2d");
+        ctx1CT7.globalAlpha = 0.4;
+        ctx1CT7.fillStyle = "#FFFF80";
+        ctx1CT7.fillRect(300,130,550,150);
+
+        ctx1CT7.globalAlpha = 1;
+        ctx1CT7.font = '25pt DFKai-SB';
+        ctx1CT7.fillStyle = 'black';
+        ctx1CT7.fillText('很好，三十六計走為上策，', 310, 160);
+        ctx1CT7.fillText('憑你這樣的輕功...', 310, 200);
+        ctx1CT7.fillText('就算打不贏別人逃命也綽綽有餘了！', 310, 240);
+        ctx1CT7.font = '20pt DFKai-SB';
+        ctx1CT7.fillStyle = 'gray';
+        ctx1CT7.fillText('點擊繼續', 690, 275);
+        
+        
+        $(document).ready(function(){
+            $("#charter1CT7Canvas").click(function(){
+                $("#charter1CT7Canvas").hide("slow");
+                $("#charter1CT8Canvas").show("slow");
+            });
+        });
+
+        var cv1CT8 = document.getElementById("charter1CT8Canvas");
+        var ctx1CT8 = cv1CT8.getContext("2d");
+        ctx1CT8.globalAlpha = 0.4;
+        ctx1CT8.fillStyle = "#FFFF80";
+        ctx1CT8.fillRect(300,130,500,150);
+
+        ctx1CT8.globalAlpha = 1;
+        ctx1CT8.font = '25pt DFKai-SB';
+        ctx1CT8.fillStyle = 'black';
+        ctx1CT8.fillText('這是為師給你的禮物，', 310, 160);
+        ctx1CT8.fillText('你好好研究研究，', 310, 200);
+        ctx1CT8.fillText('入關前不妨去找大師兄討教！', 310, 240);
+        ctx1CT8.font = '20pt DFKai-SB';
+        ctx1CT8.fillStyle = 'gray';
+        ctx1CT8.fillText('點擊繼續', 690, 275);
+
+        $(document).ready(function(){
+            $("#charter1CT8Canvas").click(function(){
+                $("#charter1CICanvas").hide("slow");
+                $("#charter1CT8Canvas").hide("slow");
+                $("#charter1PT8Canvas").show("slow");
+            });
+        });
+
+        var cv1PT8 = document.getElementById("charter1PT8Canvas");
+        var ctx1PT8 = cv1PT8.getContext("2d");
+        ctx1PT8.font = '25pt DFKai-SB';
+        ctx1PT8.globalAlpha = 1;
+        ctx1PT8.fillStyle = 'orange';
+        ctx1PT8.fillText('獲得賴打x1', 400, 50);
+        ctx1PT8.fillText('獲得小李灰刀x1', 400, 90);
+
+        ctx1PT8.globalAlpha = 0.4;
+        ctx1PT8.fillStyle = "#FFFF80";
+        ctx1PT8.fillRect(200,230,500,120);
+
+        ctx1PT8.globalAlpha = 1;
+        ctx1PT8.font = '25pt DFKai-SB';
+        ctx1PT8.fillStyle = 'black';
+        ctx1PT8.fillText('打火機跟一把刀可以幹嘛阿...', 210, 260);
+        ctx1PT8.fillText('這想破頭都想不出來吧...', 210, 300);
+        ctx1PT8.font = '20pt DFKai-SB';
+        ctx1PT8.fillStyle = 'gray';
+        ctx1PT8.fillText('點擊繼續', 590, 340);
+
+        $(document).ready(function(){
+            $("#charter1PT8Canvas").click(function(){
+                $("#charter1PICanvas").hide("slow");
+                $("#charter1PT8Canvas").hide("slow");
+                $("#charter1CT9Canvas").show("slow");
+            });
+        });
+
+        var cv1CT9 = document.getElementById("charter1CT9Canvas");
+        var ctx1CT9 = cv1CT9.getContext("2d");
+        ctx1CT9.globalAlpha = 1;
+        ctx1CT9.font = '40pt DFKai-SB';
+        ctx1CT9.fillStyle = 'black';
+        ctx1CT9.fillText('兩個時辰過後...', 350, 300);
+ 
+
+        $(document).ready(function(){
+            $("#charter1CT9Canvas").click(function(){
+                $("#charter1PICanvas").show("slow");
+                $("#charter1CT9Canvas").hide("slow");
+                $("#charter1PT9Canvas").show("slow");
+            });
+        });
+
+
+        var cv1PT9 = document.getElementById("charter1PT9Canvas");
+        var ctx1PT9 = cv1PT9.getContext("2d");
+    
+
+        ctx1PT9.globalAlpha = 0.4;
+        ctx1PT9.fillStyle = "#FFFF80";
+        ctx1PT9.fillRect(200,20,500,150);
+
+        ctx1PT9.globalAlpha = 1;
+        ctx1PT9.font = '25pt DFKai-SB';
+        ctx1PT9.fillStyle = 'black';
+        ctx1PT9.fillText('阿！！！！！！！！', 210, 60);
+        ctx1PT9.fillText('我知道了！！！！！', 210, 100);
+        ctx1PT9.fillText('快去找大師兄試刀吧嘿嘿嘿...', 210, 140);
+        ctx1PT9.font = '20pt DFKai-SB';
+        ctx1PT9.fillStyle = 'gray';
+        ctx1PT9.fillText('點擊繼續', 590, 165);
+
+        $(document).ready(function(){
+            $("#charter1PT9Canvas").click(function(){
+                $("#charter1PT9Canvas").hide("slow");
+                $("#charter1CT10Canvas").show("slow");
+            });
+        });
+
+        var cv1CT10 = document.getElementById("charter1CT10Canvas");
+        var ctx1CT10 = cv1CT10.getContext("2d");
+        ctx1CT10.font = '50pt DFKai-SB';
+        ctx1CT10.globalAlpha = 1;
+        ctx1CT10.fillStyle = 'red';
+        ctx1CT10.fillText('習得火焰刀！', 320, 325);
+
+        $(document).ready(function(){
+            $("#charter1CT10Canvas").click(function(){
+                $("#charter1CT10Canvas").hide("slow");
+                $("#charter1PICanvas").hide("slow");
+                $("#charter2BbCanvas").show("slow");
+                $("#charter1BbCanvas").hide("slow");
+                
+            });
+        });
+
+        var cv2BB = document.getElementById("charter2BbCanvas");
+        var ctx2BB = cv2BB.getContext("2d");
+        var img2BB = new Image();
+        img2BB.src = "imgs/ch2bg.jpg";
+        img2BB.addEventListener("load", draw2BB);
+        function draw2BB() {
+            ctx2BB.drawImage(img2BB, 0, 0);
+        }
+
+        var cv2CI = document.getElementById("charter2CICanvas");
+        var ctx2CI = cv2CI.getContext("2d");
+        ctx2CI.globalAlpha = 1;
+        var img2CI = new Image();
+        img2CI.src = "imgs/bigbrother.png";
+        img2CI.addEventListener("load", draw2CI);
+        function draw2CI() {
+            ctx2CI.drawImage(img2CI, 810, 185);
+        }
+
+        var cv1PI2 = document.getElementById("charter1PI2Canvas");
+        var ctx1PI2 = cv1PI2.getContext("2d");
+        var img1PI2 = new Image();
+        img1PI2.src = "imgs/player.png";
+        img1PI2.addEventListener("load", draw1PI2);
+        function draw1PI2() {
+            ctx1PI2.drawImage(img1PI2, 0, 70);
+        };
+
+        var cv2PI = document.getElementById("charter2PICanvas");
+        var ctx2PI = cv2PI.getContext("2d");
+        ctx2PI.globalAlpha = 1;
+        var img2PI = new Image();
+        img2PI.src = "imgs/player2.png";
+        img2PI.addEventListener("load", draw2PI);
+        function draw2PI() {
+            ctx2PI.drawImage(img2PI, 0, 100);
+        }
+
+
+
+
+        $(document).ready(function(){
+            $("#charter2BbCanvas").click(function(){
+                $("#charter2BbCanvas").fadeTo(1000,0.8);
+                $("#charter1PI2Canvas").show("slow");
+                $("#charter2PT1Canvas").show("slow");
+            });
+        });
+
+
+        var cv2PT1 = document.getElementById("charter2PT1Canvas");
+        var ctx2PT1 = cv2PT1.getContext("2d");
+    
+        ctx2PT1.globalAlpha = 0.4;
+        ctx2PT1.fillStyle = "#FFFF80";
+        ctx2PT1.fillRect(200,20,500,150);
+
+        ctx2PT1.globalAlpha = 1;
+        ctx2PT1.font = '25pt DFKai-SB';
+        ctx2PT1.fillStyle = 'black';
+        ctx2PT1.fillText('大師兄~', 210, 60);
+        ctx2PT1.fillText('大師兄~~~', 210, 100);
+        ctx2PT1.font = '20pt DFKai-SB';
+        ctx2PT1.fillStyle = 'gray';
+        ctx2PT1.fillText('點擊繼續', 590, 165);
+
+        $(document).ready(function(){
+            $("#charter2PT1Canvas").click(function(){
+                $("#charter2PT1Canvas").hide("slow");
+                $("#charter2CICanvas").show("slow");
+                $("#charter2CT1Canvas").show("slow");
+            });
+        });
+
+
+        var cv2CT1 = document.getElementById("charter2CT1Canvas");
+        var ctx2CT1 = cv2CT1.getContext("2d");
+        ctx2CT1.globalAlpha = 0.4;
+        ctx2CT1.fillStyle = "#FFFF80";
+        ctx2CT1.fillRect(300,130,500,150);
+
+        ctx2CT1.globalAlpha = 1;
+        ctx2CT1.font = '25pt DFKai-SB';
+        ctx2CT1.fillStyle = 'black';
+        ctx2CT1.fillText('吵什麼吵阿...', 310, 160);
+        ctx2CT1.font = '20pt DFKai-SB';
+        ctx2CT1.fillStyle = 'gray';
+        ctx2CT1.fillText('點擊繼續', 690, 275);
+
+        $(document).ready(function(){
+            $("#charter2CT1Canvas").click(function(){
+                $("#charter2CT1Canvas").hide("slow");
+                $("#charter2PT2Canvas").show("slow");
+            });
+        });
+
+        var cv2PT2 = document.getElementById("charter2PT2Canvas");
+        var ctx2PT2 = cv2PT2.getContext("2d");
+    
+        ctx2PT2.globalAlpha = 0.4;
+        ctx2PT2.fillStyle = "#FFFF80";
+        ctx2PT2.fillRect(200,20,500,150);
+
+        ctx2PT2.globalAlpha = 1;
+        ctx2PT2.font = '25pt DFKai-SB';
+        ctx2PT2.fillStyle = 'black';
+        ctx2PT2.fillText('大師兄我明天要入關了，', 210, 60);
+        ctx2PT2.fillText('想找您學學您的易容術，', 210, 100);
+        ctx2PT2.fillText('順便找你練練功！', 210, 140);
+        ctx2PT2.font = '20pt DFKai-SB';
+        ctx2PT2.fillStyle = 'gray';
+        ctx2PT2.fillText('點擊繼續', 590, 165);
+
+        $(document).ready(function(){
+            $("#charter2PT2Canvas").click(function(){
+                $("#charter2PT2Canvas").hide("slow");
+                $("#charter2CT2Canvas").show("slow");
+            });
+        });
+
+
+        var cv2CT2 = document.getElementById("charter2CT2Canvas");
+        var ctx2CT2 = cv2CT2.getContext("2d");
+        ctx2CT2.globalAlpha = 0.4;
+        ctx2CT2.fillStyle = "#FFFF80";
+        ctx2CT2.fillRect(300,130,500,150);
+
+        ctx2CT2.globalAlpha = 1;
+        ctx2CT2.font = '25pt DFKai-SB';
+        ctx2CT2.fillStyle = 'black';
+        ctx2CT2.fillText('易容可不是那麼好學的，', 310, 160);
+        ctx2CT2.fillText('從簡單的先來吧...', 310, 200);
+        ctx2CT2.fillText('頭髮綁起來，再在臉上擦點...', 310, 240);
+        ctx2CT2.font = '20pt DFKai-SB';
+        ctx2CT2.fillStyle = 'gray';
+        ctx2CT2.fillText('點擊繼續', 690, 275);
+
+        $(document).ready(function(){
+            $("#charter2CT2Canvas").click(function(){
+                $("#charter2CT2Canvas").hide("slow");
+                $("#charter2CICanvas").hide("slow");
+                $("#charter1PI2Canvas").hide("slow");
+                $("#charter2PT3Canvas").show("slow");
+            });
+        });
+
+        var cv2PT3 = document.getElementById("charter2PT3Canvas");
+        var ctx2PT3 = cv1CT9.getContext("2d");
+        ctx2PT3.globalAlpha = 1;
+        ctx2PT3.font = '40pt DFKai-SB';
+        ctx2PT3.fillStyle = 'black';
+        ctx2PT3.fillText('一個時辰過後...', 350, 300);
+
+        $(document).ready(function(){
+            $("#charter2PT3Canvas").click(function(){
+                $("#charter2PT3Canvas").hide("slow");
+                $("#charter2CT3Canvas").show("slow");
+                $("#charter2PICanvas").show("slow");
+                $("#charter2CICanvas").show("slow");
+            });
+        });
+
+
+        var cv2CT3 = document.getElementById("charter2CT3Canvas");
+        var ctx2CT3 = cv2CT3.getContext("2d");
+        ctx2CT3.globalAlpha = 0.4;
+        ctx2CT3.fillStyle = "#FFFF80";
+        ctx2CT3.fillRect(300,130,500,150);
+
+        ctx2CT3.globalAlpha = 1;
+        ctx2CT3.font = '25pt DFKai-SB';
+        ctx2CT3.fillStyle = 'black';
+        ctx2CT3.fillText('好了...', 310, 160);
+        ctx2CT3.fillText('連你媽都認不出來你是誰了', 310, 200);
+        ctx2CT3.fillText('來練劍吧...師兄讓你三招！', 310, 240);
+        ctx2CT3.font = '20pt DFKai-SB';
+        ctx2CT3.fillStyle = 'gray';
+        ctx2CT3.fillText('點擊繼續', 690, 275);
+
+        $(document).ready(function(){
+            $("#charter2CT3Canvas").click(function(){
+                $("#charter2CT3Canvas").hide("slow");
+                $("#charter2PICanvas").hide("slow");
+                $("#charter2CICanvas").hide("slow");
+                $("#charter2BbCanvas").hide("slow");
+                $("#divbattle2").show("slow");
+            });
+        });
+
+        function over(){setTimeout(function end(){
+            document.getElementById("divbattle2").style.display = "none";
+            document.getElementById("charter2PT4Canvas").style.display="inline"; 
+            document.getElementById("charter2CICanvas").style.display="inline";
+            document.getElementById("charter2PICanvas").style.display="inline";
+            document.getElementById("charter2BbCanvas").style.display="inline";    
+            },10000)
+        }
+
+        var cv2PT4 = document.getElementById("charter2PT4Canvas");
+        var ctx2PT4 = cv2PT4.getContext("2d");
+    
+        ctx2PT4.globalAlpha = 0.4;
+        ctx2PT4.fillStyle = "#FFFF80";
+        ctx2PT4.fillRect(200,20,500,150);
+
+        ctx2PT4.globalAlpha = 1;
+        ctx2PT4.font = '25pt DFKai-SB';
+        ctx2PT4.fillStyle = 'black';
+        ctx2PT4.fillText('大師兄走位真風騷...', 210, 60);
+        ctx2PT4.fillText('看似打中其實被他閃過了...', 210, 100);
+        ctx2PT4.font = '20pt DFKai-SB';
+        ctx2PT4.fillStyle = 'gray';
+        ctx2PT4.fillText('點擊繼續', 590, 165);
+
+        $(document).ready(function(){
+            $("#charter2PT4Canvas").click(function(){
+                $("#charter2PT4Canvas").hide("slow");
+                $("#charter2CT4Canvas").show("slow");
+            });
+        });
+
+
+        var cv2CT4 = document.getElementById("charter2CT4Canvas");
+        var ctx2CT4 = cv2CT4.getContext("2d");
+        ctx2CT4.globalAlpha = 0.4;
+        ctx2CT4.fillStyle = "#FFFF80";
+        ctx2CT4.fillRect(300,130,500,150);
+
+        ctx2CT4.globalAlpha = 1;
+        ctx2CT4.font = '25pt DFKai-SB';
+        ctx2CT4.fillStyle = 'black';
+        ctx2CT4.fillText('好說好說！', 310, 160);
+        ctx2CT4.fillText('今晚好好休息吧！', 310, 200);
+        ctx2CT4.fillText('明晨送你進府城！', 310, 240);
+        ctx2CT4.font = '20pt DFKai-SB';
+        ctx2CT4.fillStyle = 'gray';
+        ctx2CT4.fillText('點擊繼續', 690, 275);
+
+        $(document).ready(function(){
+            $("#charter2CT4Canvas").click(function(){
+                $("#charter2CT4Canvas").hide("slow");
+                $("#charter2CICanvas").hide("slow");
+                $("#charter2PICanvas").hide("slow");
+                $("#charter2PT5Canvas").show("slow");
+            });
+        });
+
+        var cv2CT5 = document.getElementById("charter2PT5Canvas");
+        var ctx2CT5 = cv2CT5.getContext("2d");
+        ctx2CT5.font = '50pt DFKai-SB';
+        ctx2CT5.globalAlpha = 1;
+        ctx2CT5.fillStyle = 'red';
+        ctx2CT5.fillText('試玩結束，', 280, 225);
+        ctx2CT5.fillText('$49解鎖下一章節！', 280, 300);
+
+
+    </script>
+
+
+    <script type="text/javascript">
+        var cvB1BG = document.getElementById("battle01BGCanvas");
+        var ctxB1BG = cvB1BG.getContext("2d");
+        var imgB1BG = new Image();
+        imgB1BG.src = "imgs/ch1bg.jpg";
+        imgB1BG.addEventListener("load", drawB1BG);
+        function drawB1BG() {
+            ctxB1BG.drawImage(imgB1BG, 0, 0);
+        };
+
+        var touch =0;
+             
+
+    
+   // $(function() {
+   //      setInterval(function() {
+   //          $("#bird").each(function() {
+   //              $(this).animate({
+   //                  top: Math.floor(Math.random() * 390) + "px",
+   //                  left: Math.floor(Math.random() * 900) + "px",
+   //              }, 1000);
+   //          });
+   //      }, 500);
+
+   //  });
+
+ 
+    var playerLC = document.getElementById("player");
+    var birdLC = document.getElementById("bird");
+
+    function playerMove(eve) {
+        switch (eve.keyCode) {
+            case 37: //left
+                playerLC.style.left = (playerLC.offsetLeft -100) + "px";
+                playerLC.style.transform = "rotateY(180deg)";
+                if (parseFloat(playerLC.style.left)<-100) {
+                  playerLC.style.left = -100 +"px";
+                };
+                if (parseFloat(playerLC.style.left)+200 >parseFloat(birdLC.style.left)&&
+                  parseFloat(playerLC.style.left)<parseFloat(birdLC.style.left)+75&&parseFloat(playerLC.style.top)+200>parseFloat(birdLC.style.top)&&parseFloat(playerLC.style.top)<parseFloat(birdLC.style.top)+50) {
+                  birdLC.style.left = Math.floor(Math.random() * 900) + "px";
+                  birdLC.style.top = Math.floor(Math.random() * 300) + "px";
+                  touch = touch+1;
+                  document.getElementById("score").innerHTML="抓到的麻雀數量："+touch;
+                };
+                break;
+            case 38: //up
+                playerLC.style.top = (playerLC.offsetTop -20) + "px";
+                if (parseFloat(playerLC.style.top)< 0) {
+                  playerLC.style.top = 0 +"px";
+                };
+                if (parseFloat(playerLC.style.left)+200 >parseFloat(birdLC.style.left)&&
+                  parseFloat(playerLC.style.left)<parseFloat(birdLC.style.left)+75&&parseFloat(playerLC.style.top)+200>parseFloat(birdLC.style.top)&&parseFloat(playerLC.style.top)<parseFloat(birdLC.style.top)+50) {
+                  birdLC.style.left = Math.floor(Math.random() * 900) + "px";
+                  birdLC.style.top = Math.floor(Math.random() * 300) + "px";
+                  touch = touch+1;
+                  document.getElementById("score").innerHTML="抓到的麻雀數量："+touch;
+                };
+                break;
+            case 39: //right
+                playerLC.style.left = (playerLC.offsetLeft -70) + "px";
+                playerLC.style.transform = "rotateX(0deg)";
+                if (parseFloat(playerLC.style.left)>800) {
+                  playerLC.style.left = 800 +"px";
+                };
+                if (parseFloat(playerLC.style.left)+200 >parseFloat(birdLC.style.left)&&
+                  parseFloat(playerLC.style.left)<parseFloat(birdLC.style.left)+75&&parseFloat(playerLC.style.top)+200>parseFloat(birdLC.style.top)&&parseFloat(playerLC.style.top)<parseFloat(birdLC.style.top)+50) {
+                  birdLC.style.left = Math.floor(Math.random() * 900) + "px";
+                  birdLC.style.top = Math.floor(Math.random() * 300) + "px";
+                  touch = touch+1;
+                  document.getElementById("score").innerHTML="抓到的麻雀數量："+touch;
+                };
+                break;
+            case 40: //down
+                playerLC.style.top = (playerLC.offsetTop + 10) + "px";
+                if (parseFloat(playerLC.style.top)>370) {
+                  playerLC.style.top = 370 +"px";
+                };
+                if (parseFloat(playerLC.style.left)+200 >parseFloat(birdLC.style.left)&&
+                  parseFloat(playerLC.style.left)<parseFloat(birdLC.style.left)+75&&parseFloat(playerLC.style.top)-200>parseFloat(birdLC.style.top)&&parseFloat(playerLC.style.top)<parseFloat(birdLC.style.top)-50) {
+                  birdLC.style.left = Math.floor(Math.random() * 900) + "px";
+                  birdLC.style.top = Math.floor(Math.random() * 300) + "px";
+                  touch = touch+1;
+                  document.getElementById("score").innerHTML="抓到的麻雀數量："+touch;
+                };
+                break;
+            default:
+                break;
+                
+        }
+    }
+        
+    </script>
+
+
+    <script type="text/javascript">
+
+var game = new Game();
+
+function init() {
+    if(game.init())
+        game.start();
+}
+
+
+var imageRepository = new function() {
+
+    this.background = new Image();
+    this.spaceship = new Image();
+    this.bullet = new Image();
+    this.enemy = new Image();
+    this.enemyBullet = new Image();
+
+    var numImages = 5;
+    var numLoaded = 0;
+    function imageLoaded() {
+        numLoaded++;
+        if (numLoaded === numImages) {
+            window.init();
+        }
+    }
+    this.background.onload = function() {
+        imageLoaded();
+    }
+    this.spaceship.onload = function() {
+        imageLoaded();
+    }
+    this.bullet.onload = function() {
+        imageLoaded();
+    }
+    this.enemy.onload = function() {
+        imageLoaded();
+    }
+    this.enemyBullet.onload = function() {
+        imageLoaded();
+    }
+
+    this.background.src = "imgs/ch2bg.jpg";
+    this.spaceship.src = "imgs/ship.png";
+    this.bullet.src = "imgs/bullet.png";
+    this.enemy.src= "imgs/enemy.png";
+    this.enemyBullet.src = "bullet_enemy.png";
+}
+
+
+function Drawable() {   
+    this.init = function(x, y, width, height) {
+        // Defualt variables
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    this.speed = 0;
+    this.canvasWidth = 0;
+    this.canvasHeight = 0;
+    this.collidableWith = "";
+    this.isColliding = false;
+    this.type = "";
+
+    // Define abstract function to be implemented in child objects
+    this.draw = function() {
+    };
+    this.move = function() {
+    };
+    this.isCollidableWith = function(object) {
+        return (this.collidableWith === object.type);
+    };
+}
+
+
+function Background() {
+    this.draw = function() {   
+        this.context.drawImage(imageRepository.background, this.x, this.y);
+    };
+}
+Background.prototype = new Drawable();
+
+
+function Bullet(object) {   
+    this.alive = false; 
+    var self = object;
+
+    this.spawn = function(x, y, speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.alive = true;
+    };
+
+    this.draw = function() {
+        this.context.clearRect(this.x, this.y, this.width, this.height);
+        this.x += this.speed;
+
+        if (this.isColliding) {
+            return true;
+        }
+        else if (self === "bullet" && this.x >= 1000 - this.width) {
+            return true;
+        }
+        else if (self === "enemyBullet" && this.x >= this.canvasHeight) {
+        return true;
+        }
+        else {
+            if (self === "bullet") {
+                this.context.drawImage(imageRepository.bullet, this.x, this.y);
+            }
+            else if (self === "enemyBullet") {
+                this.context.drawImage(imageRepository.enemyBullet, this.x, this.y);
+            }
+            return false;
+        }
+    };
+    
+ 
+    this.clear = function() {
+        this.x = 0;
+        this.y = 0;
+        this.speed = 0;
+        this.alive = false;
+        this.isColliding = false;
+    };
+}
+Bullet.prototype = new Drawable();
+
+
+
+function Pool(maxSize) {
+    var size = maxSize; 
+    var pool = [];
+
+    this.getPool = function() {
+        var obj = [];
+        for (var i = 0; i < size; i++) {
+            if (pool[i].alive) {
+                obj.push(pool[i]);
+            }
+        }
+        return obj;
+    }
+
+    
+    this.init = function(object) {
+    if (object == "bullet") {
+        for (var i = 0; i < size; i++) {
+            var bullet = new Bullet("bullet");
+            bullet.init(0,0, imageRepository.bullet.width, imageRepository.bullet.height);
+            pool[i] = bullet;
+            }
+        }
+        else if (object == "enemy") {
+            for (var i = 0; i < size; i++) {
+                var enemy = new Enemy();
+                enemy.init(0,0, imageRepository.enemy.width, imageRepository.enemy.height);
+                pool[i] = enemy;
+            }
+        }
+        else if (object == "enemyBullet") {
+            for (var i = 0; i < size; i++) {
+                var bullet = new Bullet("enemyBullet");
+                bullet.init(0,0, imageRepository.enemyBullet.width, imageRepository.enemyBullet.height);
+                pool[i] = bullet;
+            }
+        }
+    };
+    
+    this.get = function(x, y, speed) {
+        if(!pool[size - 1].alive) {
+            pool[size - 1].spawn(x, y, speed);
+            pool.unshift(pool.pop());
+        }
+    };
+
+    this.getTwo = function(x1, y1, speed1, x2, y2, speed2) {
+        if(!pool[size - 1].alive && !pool[size - 2].alive) {
+            this.get(x1, y1, speed1);
+            this.get(x2, y2, speed2);
+        }
+    };
+
+
+    this.animate = function() {
+        for (var i = 0; i < size; i++) {
+            if (pool[i].alive) {
+                if (pool[i].draw()) {
+                    pool[i].clear();
+                    pool.push((pool.splice(i,1))[0]);
+                }
+            }
+            else
+                break;
+        }
+    };
+}
+
+
+
+function Ship() {
+    this.speed = 15;
+    this.bulletPool = new Pool(30);
+    this.bulletPool.init("bullet");
+
+    var fireRate = 30;
+    var counter = 0;
+    this.collidableWith = "enemyBullet";
+    this.type = "ship";
+    
+    this.draw = function() {
+        this.context.drawImage(imageRepository.spaceship, this.x, this.y);
+    };
+    this.move = function() {    
+        counter++;
+        if (KEY_STATUS.left || KEY_STATUS.right ||
+            KEY_STATUS.down || KEY_STATUS.up) {
+            this.context.clearRect(this.x, this.y, this.width, this.height);
+            
+            if (KEY_STATUS.left) {
+                this.x -= this.speed
+                if (this.x <= 0) 
+                    this.x = 0;
+            } else if (KEY_STATUS.right) {
+                this.x += this.speed
+                if (this.x >= this.canvasWidth - this.width-300)
+                    this.x = this.canvasWidth - this.width-300;
+            } else if (KEY_STATUS.up) {
+                this.y -= this.speed
+                if (this.y <= 0)
+                    this.y = 0;
+            } else if (KEY_STATUS.down) {
+                this.y += this.speed
+                if (this.y >= this.canvasHeight - this.height-150)
+                    this.y = this.canvasHeight - this.height-150;
+            }
+            
+            if (!this.isColliding) {
+                this.draw();
+            }
+        }
+        if (KEY_STATUS.space && counter >= fireRate && !this.isColliding) {
+            this.fire();
+            counter = 0;
+        }
+    };
+    this.fire = function() {
+        this.bulletPool.getTwo(this.x+6, this.y, 3,
+                               this.x+33, this.y, 3);
+    };
+}
+Ship.prototype = new Drawable();
+
+
+function Enemy() {
+    var percentFire = .01;
+    var chance = 0;
+    this.alive = false;
+    this.collidableWith = "bullet";
+    this.type = "enemy";
+
+ 
+    this.spawn = function(x, y, speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.speedX = 0;
+        this.speedY = speed;
+        this.alive = true;
+        this.leftEdge = this.x - 90;
+        this.rightEdge = this.x + 90;
+        this.bottomEdge = this.y + 140;
+    };
+
+
+    this.draw = function() {
+        this.context.clearRect(this.x-1, this.y, this.width+1, this.height);
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x <= this.leftEdge) {
+            this.speedX = this.speed;
+        }
+        else if (this.x >= this.rightEdge + this.width) {
+            this.speedX = -this.speed;
+        }
+        else if (this.y >= this.bottomEdge) {
+            this.speed = 1.5;
+            this.speedY = 0;
+            this.y -= 5;
+            this.speedX = -this.speed;
+        }
+
+        if (!this.isColliding) {
+            this.context.drawImage(imageRepository.enemy, this.x, this.y);
+
+            chance = Math.floor(Math.random()*101);
+            if (chance/100 < percentFire) {
+                this.fire();
+            }
+
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+
+
+    this.fire = function() {
+        game.enemyBulletPool.get(this.x+this.width/2, this.y+this.height, -2.5);
+    };
+
+
+    this.clear = function() {
+        this.x = 0;
+        this.y = 0;
+        this.speed = 0;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.alive = false;
+        this.isColliding = false;
+    };
+}
+Enemy.prototype = new Drawable();
+
+
+function Game() {
+
+    this.init = function() {
+        this.bgCanvas = document.getElementById('background');
+        this.shipCanvas = document.getElementById('ship');
+        this.mainCanvas = document.getElementById('main');
+ 
+        if (this.bgCanvas.getContext) {
+            this.bgContext = this.bgCanvas.getContext('2d');
+            this.shipContext = this.shipCanvas.getContext('2d');
+            this.mainContext = this.mainCanvas.getContext('2d');
+
+            Background.prototype.context = this.bgContext;
+            Background.prototype.canvasWidth = this.bgCanvas.width;
+            Background.prototype.canvasHeight = this.bgCanvas.height;
+
+            Ship.prototype.context = this.shipContext;
+            Ship.prototype.canvasWidth = this.shipCanvas.width;
+            Ship.prototype.canvasHeight = this.shipCanvas.height;
+
+            Bullet.prototype.context = this.mainContext;
+            Bullet.prototype.canvasWidth = this.mainCanvas.width;
+            Bullet.prototype.canvasHeight = this.mainCanvas.height;
+
+            Enemy.prototype.context = this.mainContext;
+            Enemy.prototype.canvasWidth = this.mainCanvas.width;
+            Enemy.prototype.canvasHeight = this.mainCanvas.height;
+    
+            this.background = new Background();
+            this.background.init(0,0); 
+
+            this.ship = new Ship();
+            var shipStartX = 0;
+            var shipStartY = this.shipCanvas.height/2 - imageRepository.spaceship.height;
+            this.ship.init(shipStartX, shipStartY, imageRepository.spaceship.width,
+                           imageRepository.spaceship.height);
+          
+            this.enemyPool = new Pool(1);
+            this.enemyPool.init("enemy");
+            var height = imageRepository.enemy.height;
+            var width = imageRepository.enemy.width;
+            var x = 600;
+            var y = 100;
+            var spacer = y * 1.5;
+            for (var i = 1; i <= 18; i++) {
+                this.enemyPool.get(x,y,2);
+                x += width + 25;
+                if (i % 6 == 0) {
+                    x = 100;
+                    y += spacer
+                }
+            }
+            this.enemyBulletPool = new Pool(50);
+            this.enemyBulletPool.init("enemyBullet");
+            return true;
+        } else {
+            return false;
+        }
+    };
+ 
+    this.start = function() {
+        this.ship.draw();
+        animate();
+    };
+}
+function animate() {
+    requestAnimFrame( animate );
+    game.background.draw();
+    game.ship.move();
+    game.ship.bulletPool.animate();
+    game.enemyPool.animate();
+    game.enemyBulletPool.animate();
+}
+
+
+KEY_CODES = {
+  32: 'space',
+  37: 'left',
+  38: 'up',
+  39: 'right',
+  40: 'down',
+}
+
+
+KEY_STATUS = {};
+for (code in KEY_CODES) {
+  KEY_STATUS[KEY_CODES[code]] = false;
+}
+
+document.onkeydown = function(e) {
+  var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
+  if (KEY_CODES[keyCode]) {
+    e.preventDefault();
+    KEY_STATUS[KEY_CODES[keyCode]] = true;
+  }
+}
+
+document.onkeyup = function(e) {
+  var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
+  if (KEY_CODES[keyCode]) {
+    e.preventDefault();
+    KEY_STATUS[KEY_CODES[keyCode]] = false;
+  }
+}
+
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       || 
+            window.webkitRequestAnimationFrame || 
+            window.mozRequestAnimationFrame    || 
+            window.oRequestAnimationFrame      || 
+            window.msRequestAnimationFrame     || 
+            function(callback,element){
+                window.setTimeout(callback, 1000 / 60);
+            };
+})();
+
+    </script>
+
+
+</body>
+</html>
