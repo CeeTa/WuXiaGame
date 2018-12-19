@@ -1,4 +1,3 @@
-1.學程式以來第一個作品
-2.以Canvas呈現
-3.音檔不見了以後再補
-4.真的很年輕連hover都沒做效果
+https://ceeta.github.io/WuXiaGame/
+
+First project, s a record.
